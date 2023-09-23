@@ -131,19 +131,19 @@ $(filter %.init.o,$(obj-y) $(obj-bin-y) $(extra-y)): CFLAGS-y += -DINIT_SECTIONS
 
 non-init-objects = $(filter-out %.init.o, $(obj-y) $(obj-bin-y) $(extra-y))
 
-ifeq ($(CONFIG_COVERAGE),y)
-ifeq ($(CONFIG_CC_IS_CLANG),y)
-    COV_FLAGS := -fprofile-instr-generate -fcoverage-mapping
-else
-    COV_FLAGS := -fprofile-arcs -ftest-coverage
-endif
+# ifeq ($(CONFIG_COVERAGE),y)
+# ifeq ($(CONFIG_CC_IS_CLANG),y)
+#     COV_FLAGS := -fprofile-instr-generate -fcoverage-mapping
+# else
+#     COV_FLAGS := -fprofile-arcs -ftest-coverage
+# endif
 
-# Reset COV_FLAGS in cases where an objects has another one as prerequisite
-$(nocov-y) $(filter %.init.o, $(obj-y) $(obj-bin-y) $(extra-y)): \
-    COV_FLAGS :=
+# # Reset COV_FLAGS in cases where an objects has another one as prerequisite
+# $(nocov-y) $(filter %.init.o, $(obj-y) $(obj-bin-y) $(extra-y)): \
+#     COV_FLAGS :=
 
-$(non-init-objects): _c_flags += $(COV_FLAGS)
-endif
+# $(non-init-objects): _c_flags += $(COV_FLAGS)
+# endif
 
 ifeq ($(CONFIG_UBSAN),y)
 # Any -fno-sanitize= options need to come after any -fsanitize= options

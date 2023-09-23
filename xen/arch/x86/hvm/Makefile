@@ -29,3 +29,27 @@ obj-y += vm_event.o
 obj-y += vmsi.o
 obj-y += vpic.o
 obj-y += vpt.o
+$(info non-init-objects are $(non-init-objects))
+
+non-init-objects = $(filter-out %.init.o, $(obj-y) $(obj-bin-y) $(extra-y))
+$(info non-init-objects are $(non-init-objects))
+
+ifeq ($(CONFIG_COVERAGE),y)
+ifeq ($(CONFIG_CC_IS_CLANG),y)
+    COV_FLAGS := -fprofile-instr-generate -fcoverage-mapping
+else
+    COV_FLAGS := -fprofile-arcs -ftest-coverage
+endif
+
+
+obj-y: _c_flags += $(COV_FLAGS)
+
+# CFLAGS-y += $(COV_FLAGS)
+$(info _c_flags are $(_c_flags))
+$(info CFLAGS are $(CFLAGS-y))
+$(info COV_FLAGS are $(COV_FLAGS))
+$(info non-init-objects are $(non-init-objects))
+endif
+
+$(non-init-objects):
+    $(info Building $@ with CFLAGS-y = $(CFLAGS-y))
