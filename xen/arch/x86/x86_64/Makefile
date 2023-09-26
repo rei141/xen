@@ -14,13 +14,3 @@ obj-$(CONFIG_COMPAT) += cpufreq.o
 obj-bin-$(CONFIG_KEXEC) += kexec_reloc.o
 
 obj-$(CONFIG_CRASH_DEBUG)   += gdbstub.o
-
-ifeq ($(CONFIG_COVERAGE),y)
-ifeq ($(CONFIG_CC_IS_CLANG),y)
-    COV_FLAGS := -fprofile-instr-generate -fcoverage-mapping
-else
-    COV_FLAGS := -fprofile-arcs -ftest-coverage
-endif
-
-_c_flags += $(COV_FLAGS)
-endif
